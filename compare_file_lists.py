@@ -13,14 +13,14 @@
 import csv
 import os
 
-def how_to_do_file_comparison(possible_storage_locations, possible_directories)
+def how_to_do_file_comparison(possible_storage_locations, possible_directories):
     """This funciton takes an input from the user who decides how the file comparison is going to work. It outputs a string which then decides how the rest of the script runs."""
 
     method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
 
-    if method like "directory":
+    if method == "directory":
         get_directories_to_compare(possible_directories)
-    elif method like "storage location":
+    elif method == "storage location":
         get_storage_locations_to_compare(possible_storage_locations)
     else:
         print("Your input was invalid. It should be directory or storage location. This script will now exit. Please retry.")
@@ -36,14 +36,14 @@ def get_storage_locations_to_compare(possible_storage_locations):
     storage_location2 = None
 
     while storage_location1 not in possible_storage_locations:
-        storage_location1 = str(input("Type the name of the first storage location that you would like to compare.  "
+        storage_location1 = str(input("Type the name of the first storage location that you would like to compare.  "))
         if storage_location1 in possible_storage_locations: 
             print("Going to compare ", storage_location1)
         else:
             print("That storage location does not exist. Please type another storage location.  ")
 
     while storage_location2 not in possible_storage_locations:
-        storage_location2 = str(input("Type the name of the second storage location that you would like to compare.  ")
+        storage_location2 = str(input("Type the name of the second storage location that you would like to compare.  "))
         if storage_location2 in possible_storage_locations:
             print("Going to compare ", storage_location2)
         else:
@@ -61,14 +61,14 @@ def get_directories_to_compare(possible_directory_locations):
     directory2 = None
 
     while directory1 not in possible_directories:
-        directory1 = str(input("Type the name of the first directory that you would like to compare.  "
+        directory1 = str(input("Type the name of the first directory that you would like to compare.  "))
         if directory1 in possible_directories:
             print("Going to compare ", directory1)
         else:
             print("That directory does not exist. Please type another directory.  ")
 
     while directory2 not in possible_directories:
-        directory2 = str(input("Type the name of the second directory that you would like to compare.  ")
+        directory2 = str(input("Type the name of the second directory that you would like to compare.  "))
         if directory2 in possible_directories:
             print("Going to compare ", directory2)
         else:
@@ -99,7 +99,7 @@ def dict_files_in_storage_location(storage_location, dir_path_to_files):
     return dict_files 
         
 
-def compare_dictionaries_on_key(key, dictionary1, dictionary2):
+def compare_dictionaries_on_key(key: object, dictionary1: object, dictionary2: object) -> object:
     """Compare two dictionaries on a key that is defined. Output matching results in a list of lists."""
 
     comparison_files = []
@@ -121,7 +121,7 @@ def compare_dictionaries_on_key(key, dictionary1, dictionary2):
 def get_filename(filepath):
     """Get the filename from a full filepath."""
 
-    filename = os.path.basename(file)
+    filename = os.path.basename(filepath)
 
     return filename
 
@@ -134,7 +134,7 @@ def split_filename(filename):
     return filename_split
 
 
-def get_storage_location_from_filename(filename)
+def get_storage_location_from_filename(filename):
     """Get the storage location from the split filename (tuple) and output as string."""
 
     storage_location = split_filename(filename)[0]
@@ -142,7 +142,7 @@ def get_storage_location_from_filename(filename)
     return storage_location
 
 
-def get_directory_from_filename(filename)
+def get_directory_from_filename(filename, filename_appendix):
     """Get the directory from the split filename (tuple) and output as string."""
 
     storage_location = get_storage_location_from_filename(filename)
@@ -218,6 +218,7 @@ def write_set_to_file(set_name, output_file):
 possible_storage_locations = ['spinas1', 'spinas2', 'spinas1-migr', 'spinas2-migr', 'testspinas1', 'testspinas2', 'testspinas1-migr', 'testspinas2-migr']
 possible_directories = ['ace_data', 'data_admin', 'work_leg1', 'work_leg4']
 
+dir_path_to_files = '/home/jen/projects/ace_data_management/wip/checking_nas/'
 
 ###########################
 
@@ -227,8 +228,10 @@ method_of_file_comparison = how_to_do_file_comparison(possible_storage_locations
 ## ASSUMING THAT WE CHOOSE STORAGE LOCATIONS FOR NOW
 # Get a tuple of the storage locations that the user wants to compare: 
 storage_locations = get_storage_locations_to_compare(possible_storage_locations)
+storage_location1 = storage_locations[0]
+storage_location2 = storage_locations[1]
 
-# Create a dictionary of the files to compare. 
+# Create a dictionary of the files to compare.
 files_storage_location1 = dict_files_in_storage_location(storage_location1, dir_path_to_files) 
 files_storage_location2 = dict_files_in_storage_location(storage_location2, dir_path_to_files) 
 
@@ -274,3 +277,10 @@ write_set_to_file(missing_backup_files, output_file)
 # Check that the number of missing elements is the same as the number of lines written to the output file.
 file_type = 'missing'
 check_length_list(output_file, missing_backup_files, file_type)
+
+def main():
+
+   # PUT FUNCTIONS HERE
+
+if __name__ == "__main__":
+    main()
