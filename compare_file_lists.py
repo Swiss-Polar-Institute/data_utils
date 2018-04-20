@@ -19,7 +19,7 @@ def how_to_do_file_comparison(possible_storage_locations, possible_directories):
     method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
 
     if method == "directory" or method == "storage location":
-        print("OK. This script will not compare by ", method)
+        print("OK. This script will compare by ", method)
     else:
         print(
             "Your input was invalid. It should be directory or storage location. This script will now exit. Please retry.")
@@ -91,7 +91,7 @@ def dict_files_in_storage_location(storage_location, dir_path_to_files):
     dict_files = {}
 
     for file in file_list:
-        directory = get_directory_from_filename(file)
+        directory = get_directory_from_filename(file, filename_appendix)
         dict_files_location = {directory: (storage_location, file)}
         dict_files.update(dict_files_location)
 
