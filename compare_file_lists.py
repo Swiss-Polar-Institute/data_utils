@@ -286,7 +286,7 @@ def compare_files(file1, file2):
     # Compare the sets.
     missing_files = difference_between_sets(file1_set, file2_set)
 
-    # Output the missing files (those in backup and not in master) to a file.
+    # Output the missing files to a file.
     output_file = dir_path_to_files + "test_missing_files.csv"
     write_set_to_file(missing_files, output_file)
 
