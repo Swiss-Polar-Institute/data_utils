@@ -145,8 +145,10 @@ def get_directory_from_filename(filename, filename_appendix):
     """Get the directory from the split filename (tuple) and output as string."""
 
     storage_location = get_storage_location_from_filename(filename)
+    #print("storage_location: ", storage_location)
     remainder = filename.split(storage_location)
-    directory = remainder.split(filename_appendix).strip("_")
+    #print("remainder: ", remainder)
+    directory = remainder[1].split(filename_appendix)[0].strip("_")
 
     return directory
    
