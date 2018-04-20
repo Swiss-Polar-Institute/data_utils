@@ -266,19 +266,17 @@ def compare_files(file1, file2):
     file2 = dir_path_to_files + get_storage_location_from_filename(file2) + "_" + dir_name_appendix + "/" + file2
 
     # Read the first file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
-    #master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
+    #file2 = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
     file1_list = create_list_from_file(file1)
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
-    #file_type = 'master'
     check_length_list(file1, file1_list)
 
     # Read the second file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
-    #backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
+    #file2 = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
     file2_list = create_list_from_file(file2)
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
-    #file_type = 'backup'
     check_length_list(file2, file2_list)
 
     # Convert the lists to sets.
