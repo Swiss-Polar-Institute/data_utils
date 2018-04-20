@@ -18,12 +18,11 @@ def how_to_do_file_comparison(possible_storage_locations, possible_directories):
 
     method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
 
-    if method == "directory":
-        get_directories_to_compare(possible_directories)
-    elif method == "storage location":
-        get_storage_locations_to_compare(possible_storage_locations)
+    if method == "directory" or method == "storage location":
+        print("OK. This script will not compare by ", method)
     else:
-        print("Your input was invalid. It should be directory or storage location. This script will now exit. Please retry.")
+        print(
+            "Your input was invalid. It should be directory or storage location. This script will now exit. Please retry.")
         exit
 
     return method
@@ -99,7 +98,7 @@ def dict_files_in_storage_location(storage_location, dir_path_to_files):
     return dict_files 
         
 
-def compare_dictionaries_on_key(key: object, dictionary1: object, dictionary2: object) -> object:
+def compare_dictionaries_on_key(dictionary1, dictionary2):
     """Compare two dictionaries on a key that is defined. Output matching results in a list of lists."""
 
     comparison_files = []
@@ -225,62 +224,73 @@ dir_path_to_files = '/home/jen/projects/ace_data_management/wip/checking_nas/'
 # Ask the user how to deal with the file comparison.
 method_of_file_comparison = how_to_do_file_comparison(possible_storage_locations, possible_directories)
 
-## ASSUMING THAT WE CHOOSE STORAGE LOCATIONS FOR NOW
-# Get a tuple of the storage locations that the user wants to compare: 
-storage_locations = get_storage_locations_to_compare(possible_storage_locations)
-storage_location1 = storage_locations[0]
-storage_location2 = storage_locations[1]
+def compare_storage_locations(possible_storage_locations):
+    """This function compares the files of file lists by storage location."""
 
-# Create a dictionary of the files to compare.
-files_storage_location1 = dict_files_in_storage_location(storage_location1, dir_path_to_files) 
-files_storage_location2 = dict_files_in_storage_location(storage_location2, dir_path_to_files) 
+    # Get a tuple of the storage locations that the user wants to compare:
+    storage_locations = get_storage_locations_to_compare(possible_storage_locations)
 
-# Compare the dictionaries of files on the key (directory) and output a list of pairs of files (in lists) to compare.
-files_to_compare = compare_dictionaries_on_key(files_storage_location1, files_storage_location2)
+    storage_location1 = storage_locations[0]
+    storage_location2 = storage_locations[1]
 
-# Run through the pairs, doing the comparison.
-for pairs in files_to_compare: 
-    master_file = pairs[0]
-    backup_file = pairs[1]
+    # Create a dictionary of the files to compare.
+    files_storage_location1 = dict_files_in_storage_location(storage_location1, dir_path_to_files)
+    files_storage_location2 = dict_files_in_storage_location(storage_location2, dir_path_to_files)
 
-# ALL OF THE THINGS BELOW NEED INTEGRATING INTO THE FOR LOOP ABOVE. WOULD THIS BE BETTER IN A CLASS MAYBE? 
+    # Compare the dictionaries of files on the key (directory) and output a list of pairs of files (in lists) to compare.
+    files_to_compare = compare_dictionaries_on_key(files_storage_location1, files_storage_location2)
+
+    # Run through the pairs, doing the comparison.
+    for pairs in files_to_compare:
+        master_file = pairs[0]
+        backup_file = pairs[1]
+        compare_files(master_file, backup_file)
+
+def compare_directories(possible_directories):
+    get_directories_to_compare(possible_directories)
+    #TODO
 
 
+def compare_files(file1, file2):
+    """This function takes two files which contain lists of files to compare, and does a comparison, outputting the differences between the files into a text file."""
 
-# Read the master file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
-master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
-master_file_list = create_list_from_file(master_file)
+    #master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
+    master_file_list = create_list_from_file(master_file)
 
-# Check that list length is the same length as the number of rows in the file that is being read in.
-file_type = 'master'
-check_length_list(master_file, master_file_list, file_type)
+    # Check that list length is the same length as the number of rows in the file that is being read in.
+    file_type = 'master'
+    check_length_list(master_file, master_file_list, file_type)
 
-# Read the backup file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
-backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
-backup_file_list = create_list_from_file(backup_file)
+    # Read the backup file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
+    backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
+    backup_file_list = create_list_from_file(backup_file)
 
-# Check that list length is the same length as the number of rows in the file that is being read in.
-file_type = 'backup'
-check_length_list(backup_file, backup_file_list, file_type)
+    # Check that list length is the same length as the number of rows in the file that is being read in.
+    file_type = 'backup'
+    check_length_list(backup_file, backup_file_list, file_type)
 
-# Convert the lists to sets.
-master_file_set = nested_lists_to_sets(master_file_list)
-backup_file_set = nested_lists_to_sets(backup_file_list)
+    # Convert the lists to sets.
+    master_file_set = nested_lists_to_sets(master_file_list)
+    backup_file_set = nested_lists_to_sets(backup_file_list)
 
-# Compare the sets.
-missing_backup_files = difference_between_sets(master_file_set, backup_file_set)
+    # Compare the sets.
+    missing_backup_files = difference_between_sets(master_file_set, backup_file_set)
 
-# Output the missing files (those in backup and not in master) to a file.
-output_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_missing_files.csv'
-write_set_to_file(missing_backup_files, output_file)
+    # Output the missing files (those in backup and not in master) to a file.
+    output_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_missing_files.csv'
+    write_set_to_file(missing_backup_files, output_file)
 
-# Check that the number of missing elements is the same as the number of lines written to the output file.
-file_type = 'missing'
-check_length_list(output_file, missing_backup_files, file_type)
+    # Check that the number of missing elements is the same as the number of lines written to the output file.
+    file_type = 'missing'
+    check_length_list(output_file, missing_backup_files, file_type)
+
 
 def main():
+    if method_of_file_comparison == "directory":
+        compare_directories(possible_directories)
+    elif method_of_file_comparison == "storage location":
+        compare_storage_locations(possible_storage_locations)
 
-   # PUT FUNCTIONS HERE
 
 if __name__ == "__main__":
     main()
