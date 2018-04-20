@@ -107,16 +107,11 @@ def compare_dictionaries_on_key(dictionary1, dictionary2):
         compare_these_pairs = [] 
         if key in dictionary2.keys():
             compare_these_pairs = [dictionary1[key][1], dictionary2[key][1]]
-    comparison_files.append(compare_these_pairs)
+        comparison_files.append(compare_these_pairs)
+
+    return comparison_files
 
 
-    
-
-
-
-
-
-        
 def get_filename(filepath):
     """Get the filename from a full filepath."""
 
@@ -231,16 +226,23 @@ def compare_storage_locations(possible_storage_locations):
 
     # Get a tuple of the storage locations that the user wants to compare:
     storage_locations = get_storage_locations_to_compare(possible_storage_locations)
+    print("storage locations: ", storage_locations)
 
     storage_location1 = storage_locations[0]
+    print("SL1: ", storage_location1)
+
     storage_location2 = storage_locations[1]
+    print("SL2: ", storage_location2)
 
     # Create a dictionary of the files to compare.
     files_storage_location1 = dict_files_in_storage_location(storage_location1, dir_path_to_files)
+    print("files SL1: ", files_storage_location1)
     files_storage_location2 = dict_files_in_storage_location(storage_location2, dir_path_to_files)
+    print("files SL2: ", files_storage_location2)
 
     # Compare the dictionaries of files on the key (directory) and output a list of pairs of files (in lists) to compare.
     files_to_compare = compare_dictionaries_on_key(files_storage_location1, files_storage_location2)
+    print(files_to_compare)
 
     # Run through the pairs, doing the comparison.
     for pairs in files_to_compare:
