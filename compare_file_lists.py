@@ -302,15 +302,26 @@ def compare_files(file1, file2, comparison_directory):
     file1_set = nested_lists_to_sets(file1_list)
     file2_set = nested_lists_to_sets(file2_list)
 
-    # Compare the sets.
+    # Compare files 1 and 2 - output what is in file 1 but not file 2.
     missing_files = difference_between_sets(file1_set, file2_set)
 
     # Output the missing files to a file.
-    output_file = dir_path_to_files + "comparing_file_lists/" + file1_dir + "_" + file2_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
+    output_file = dir_path_to_files + "comparing_file_lists/" + "IN" + file1_dir + "_" + "MISSINGFROM" + file2_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
     write_set_to_file(missing_files, output_file)
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
     #file_type = 'missing'
+    check_length_list(output_file, missing_files)
+
+    # Compare files 1 and 2 - output what is in file 2 but not file 1.
+    missing_files = difference_between_sets(file2_set, file1_set)
+
+    # Output the missing files to a file.
+    output_file = dir_path_to_files + "comparing_file_lists/" + "IN" + file2_dir + "_" + "MISSINGFROM" + file1_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
+    write_set_to_file(missing_files, output_file)
+
+    # Check that the number of missing elements is the same as the number of lines written to the output file.
+    # file_type = 'missing'
     check_length_list(output_file, missing_files)
 
 
