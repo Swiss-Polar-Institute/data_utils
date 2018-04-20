@@ -255,34 +255,34 @@ def compare_files(file1, file2):
     """This function takes two files which contain lists of files to compare, and does a comparison, outputting the differences between the files into a text file."""
 
     #master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
-    master_file_list = create_list_from_file(master_file)
+    file1_list = create_list_from_file(file1)
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
-    file_type = 'master'
-    check_length_list(master_file, master_file_list, file_type)
+    #file_type = 'master'
+    check_length_list(file1, file1_list, file_type)
 
     # Read the backup file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
-    backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
-    backup_file_list = create_list_from_file(backup_file)
+    #backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
+    file2_list = create_list_from_file(file2)
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
-    file_type = 'backup'
-    check_length_list(backup_file, backup_file_list, file_type)
+    #file_type = 'backup'
+    check_length_list(file2, file2_list, file_type)
 
     # Convert the lists to sets.
-    master_file_set = nested_lists_to_sets(master_file_list)
-    backup_file_set = nested_lists_to_sets(backup_file_list)
+    file1_set = nested_lists_to_sets(file1_list)
+    file2_set = nested_lists_to_sets(file2_list)
 
     # Compare the sets.
-    missing_backup_files = difference_between_sets(master_file_set, backup_file_set)
+    missing_files = difference_between_sets(file1_set, file2_set)
 
     # Output the missing files (those in backup and not in master) to a file.
-    output_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_missing_files.csv'
-    write_set_to_file(missing_backup_files, output_file)
+    output_file = dir_path_to_files + "test_missing_files.csv"
+    write_set_to_file(missing_files, output_file)
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
-    file_type = 'missing'
-    check_length_list(output_file, missing_backup_files, file_type)
+    #file_type = 'missing'
+    check_length_list(output_file, missing_files, file_type)
 
 
 def main():
