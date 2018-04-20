@@ -12,6 +12,21 @@
 # Import packages
 import csv
 import os
+import datetime
+
+def get_current_date():
+    """Get the current date and write it in the format YYYYMMDD"""
+
+    now = datetime.datetime.now()
+
+    year = str(now.year)
+    month = "{:02}".format(now.month)
+    day = "{:02}".format(now.day)
+
+    todays_date = year + month + day
+
+    return todays_date
+
 
 def how_to_do_file_comparison(possible_storage_locations, possible_directories):
     """This funciton takes an input from the user who decides how the file comparison is going to work. It outputs a string which then decides how the rest of the script runs."""
@@ -251,19 +266,23 @@ def compare_storage_locations(possible_storage_locations):
         file2 = pairs[2]
         comparison_directory = pairs[0]
 
-        compare_files(file1, file2)
+        compare_files(file1, file2, comparison_directory)
 
 def compare_directories(possible_directories):
     get_directories_to_compare(possible_directories)
     #TODO
 
 
-def compare_files(file1, file2):
+def compare_files(file1, file2, comparison_directory):
     """This function takes two files which contain lists of files to compare, and does a comparison, outputting the differences between the files into a text file."""
 
+    # Get the storage location of each file for use in the output.
+    file1_dir = get_storage_location_from_filename(file1)
+    file2_dir = get_storage_location_from_filename(file2)
+
     # Put the full path to the file ;
-    file1 = dir_path_to_files + get_storage_location_from_filename(file1) + "_" + dir_name_appendix + "/" + file1
-    file2 = dir_path_to_files + get_storage_location_from_filename(file2) + "_" + dir_name_appendix + "/" + file2
+    file1 = dir_path_to_files + file1_dir + "_" + dir_name_appendix + "/" + file1
+    file2 = dir_path_to_files + file2_dir + "_" + dir_name_appendix + "/" + file2
 
     # Read the first file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
     #file2 = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
@@ -287,7 +306,7 @@ def compare_files(file1, file2):
     missing_files = difference_between_sets(file1_set, file2_set)
 
     # Output the missing files to a file.
-    output_file = dir_path_to_files + "test_missing_files.csv"
+    output_file = dir_path_to_files + "comparing_file_lists/" + file1_dir + "_" + file2_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
     write_set_to_file(missing_files, output_file)
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
