@@ -81,9 +81,6 @@ def get_directories_to_compare(possible_directory_locations):
 def dict_files_in_storage_location(storage_location, dir_path_to_files):
     """Create a dictionary of all of the files in a storage location with the directory as the key and the storage location and filename in a tuple."""
 
-    filename_appendix = "sha1sum_output.txt"
-    dir_name_appendix = "compiled_output"
-
     os.chdir(dir_path_to_files+"/"+storage_location+"_"+dir_name_appendix)
 
     file_list = os.listdir()
@@ -106,7 +103,7 @@ def compare_dictionaries_on_key(dictionary1, dictionary2):
     for key in dictionary1.keys():
         compare_these_pairs = [] 
         if key in dictionary2.keys():
-            compare_these_pairs = [dictionary1[key][1], dictionary2[key][1]]
+            compare_these_pairs = [key, dictionary1[key][1], dictionary2[key][1]]
         comparison_files.append(compare_these_pairs)
 
     return comparison_files
@@ -208,6 +205,7 @@ def write_set_to_file(set_name, output_file):
                 writer.writerows([element])
                 print(element, " written to file")
 
+
 ###########################
 # The following details are specific to comparing the ace data.
 
@@ -215,6 +213,9 @@ possible_storage_locations = ['spinas1', 'spinas2', 'spinas1-migr', 'spinas2-mig
 possible_directories = ['ace_data', 'data_admin', 'work_leg1', 'work_leg4']
 
 dir_path_to_files = '/home/jen/projects/ace_data_management/wip/checking_nas/'
+
+filename_appendix = "sha1sum_output.txt"
+dir_name_appendix = "compiled_output"
 
 ###########################
 
@@ -246,8 +247,11 @@ def compare_storage_locations(possible_storage_locations):
 
     # Run through the pairs, doing the comparison.
     for pairs in files_to_compare:
-        master_file = pairs[0]
-        backup_file = pairs[1]
+        master_file = pairs[1]
+        print("master:, ", master_file)
+        backup_file = pairs[2]
+        print("backup:, ", backup_file)
+
         compare_files(master_file, backup_file)
 
 def compare_directories(possible_directories):
@@ -257,6 +261,10 @@ def compare_directories(possible_directories):
 
 def compare_files(file1, file2):
     """This function takes two files which contain lists of files to compare, and does a comparison, outputting the differences between the files into a text file."""
+
+    # Put the full path to the file ;
+    file1 = dir_path_to_files + get_storage_location_from_filename(file1) + "_" + dir_name_appendix + "/" + file1
+    file2 = dir_path_to_files + get_storage_location_from_filename(file2) + "_" + dir_name_appendix + "/" + file2
 
     #master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
     file1_list = create_list_from_file(file1)
