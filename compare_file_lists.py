@@ -247,12 +247,11 @@ def compare_storage_locations(possible_storage_locations):
 
     # Run through the pairs, doing the comparison.
     for pairs in files_to_compare:
-        master_file = pairs[1]
-        print("master:, ", master_file)
-        backup_file = pairs[2]
-        print("backup:, ", backup_file)
+        file1 = pairs[1]
+        file2 = pairs[2]
+        comparison_directory = pairs[0]
 
-        compare_files(master_file, backup_file)
+        compare_files(file1, file2)
 
 def compare_directories(possible_directories):
     get_directories_to_compare(possible_directories)
@@ -266,6 +265,7 @@ def compare_files(file1, file2):
     file1 = dir_path_to_files + get_storage_location_from_filename(file1) + "_" + dir_name_appendix + "/" + file1
     file2 = dir_path_to_files + get_storage_location_from_filename(file2) + "_" + dir_name_appendix + "/" + file2
 
+    # Read the first file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
     #master_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas1/spinas1_work_leg1_sha1sum_output.txt'
     file1_list = create_list_from_file(file1)
 
@@ -273,7 +273,7 @@ def compare_files(file1, file2):
     #file_type = 'master'
     check_length_list(file1, file1_list)
 
-    # Read the backup file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
+    # Read the second file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
     #backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
     file2_list = create_list_from_file(file2)
 
