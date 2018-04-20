@@ -164,17 +164,17 @@ def create_list_from_file(input_file):
     return file_list
 
 
-def check_length_list(input_file, file_list, file_type):
+def check_length_list(input_file, file_list):
     """Check that the length of an input file is the same as the list from reading it in. Puts the file type in the printed output for clarity."""
 
     count_file_length = len(open(input_file).readlines())
     count_file_list = len(file_list)
 
     if count_file_length != count_file_list:
-        print(file_type, "file length: ", count_file_length)
-        print(file_type, "file list: ", count_file_list)
+        print(input_file, "file length: ", count_file_length)
+        print(input_file, "file list: ", count_file_list)
     else: 
-        print(file_type, " file length is the same as the list of files: all of the files have been read in. Number of files: ", count_file_list)
+        print(input_file, " file length is the same as the list of files: all of the files have been read in. Number of files: ", count_file_list)
 
 
 def nested_lists_to_sets(nested_lists):
@@ -259,7 +259,7 @@ def compare_files(file1, file2):
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
     #file_type = 'master'
-    check_length_list(file1, file1_list, file_type)
+    check_length_list(file1, file1_list)
 
     # Read the backup file list into a list of lists, where the nested lists are the checksum and filename of the files being queried.
     #backup_file = '/home/jen/projects/ace_data_management/wip/checking_nas/test_files_spinas2/spinas2_work_leg1_sha1sum_output.txt'
@@ -267,7 +267,7 @@ def compare_files(file1, file2):
 
     # Check that list length is the same length as the number of rows in the file that is being read in.
     #file_type = 'backup'
-    check_length_list(file2, file2_list, file_type)
+    check_length_list(file2, file2_list)
 
     # Convert the lists to sets.
     file1_set = nested_lists_to_sets(file1_list)
@@ -282,7 +282,7 @@ def compare_files(file1, file2):
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
     #file_type = 'missing'
-    check_length_list(output_file, missing_files, file_type)
+    check_length_list(output_file, missing_files)
 
 
 def main():
