@@ -185,6 +185,8 @@ def check_length_list(input_file, file_list):
     else: 
         print(input_file, " file length is the same as the list of files: all of the files have been read in. Number of files: ", count_file_list)
 
+    return count_file_list
+
 
 def nested_lists_to_sets(nested_lists):
     """Convert a list of lists (nested lists) into a list of tuples then convert this to a set."""
@@ -221,6 +223,22 @@ def write_set_to_file(set_name, output_file):
                 print(element, " written to file")
 
 
+def create_log(information, output_file):
+    """This function creates a log of all of the comparisons that have been done, when and what they have produced."""
+
+    try:
+        output = open(output_file, 'w')
+    except IOError:
+        print("Not able to open outfile: ", output_file)
+        exit(1)
+    else:
+        with output:
+            writer = csv.writer(output, lineterminator='\n')
+            writer.writerows(information)
+            print(information, " written to file")
+
+
+
 ###########################
 # The following details are specific to comparing the ace data.
 
@@ -228,6 +246,8 @@ possible_storage_locations = ['spinas1', 'spinas2', 'spinas1-migr', 'spinas2-mig
 possible_directories = ['ace_data', 'data_admin', 'work_leg1', 'work_leg4']
 
 dir_path_to_files = '/home/jen/projects/ace_data_management/wip/checking_nas/'
+
+logfile = dir_path_to_files + "checking_log.txt"
 
 filename_appendix = "sha1sum_output.txt"
 dir_name_appendix = "compiled_output"
@@ -303,26 +323,36 @@ def compare_files(file1, file2, comparison_directory):
     file2_set = nested_lists_to_sets(file2_list)
 
     # Compare files 1 and 2 - output what is in file 1 but not file 2.
-    missing_files = difference_between_sets(file1_set, file2_set)
+    missing_files1 = difference_between_sets(file1_set, file2_set)
 
     # Output the missing files to a file.
-    output_file = dir_path_to_files + "comparing_file_lists/" + "IN" + file1_dir + "_" + "MISSINGFROM" + file2_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
-    write_set_to_file(missing_files, output_file)
+    output_file1 = dir_path_to_files + "comparing_file_lists/" + "IN" + file1_dir + "_" + "MISSINGFROM" + file2_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
+    write_set_to_file(missing_files1, output_file1)
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
     #file_type = 'missing'
-    check_length_list(output_file, missing_files)
+    missing_file1_file2 = check_length_list(output_file1, missing_files1)
 
     # Compare files 1 and 2 - output what is in file 2 but not file 1.
-    missing_files = difference_between_sets(file2_set, file1_set)
+    missing_files2 = difference_between_sets(file2_set, file1_set)
 
     # Output the missing files to a file.
-    output_file = dir_path_to_files + "comparing_file_lists/" + "IN" + file2_dir + "_" + "MISSINGFROM" + file1_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
-    write_set_to_file(missing_files, output_file)
+    output_file2 = dir_path_to_files + "comparing_file_lists/" + "IN" + file2_dir + "_" + "MISSINGFROM" + file1_dir + "_" + comparison_directory + "_test_missing_files_" + get_current_date() + ".csv"
+    write_set_to_file(missing_files2, output_file2)
 
     # Check that the number of missing elements is the same as the number of lines written to the output file.
     # file_type = 'missing'
-    check_length_list(output_file, missing_files)
+    missing_file2_file1 = check_length_list(output_file2, missing_files2)
+
+    output_information1 = (file1, file2, missing_file1_file2, output_file1, get_current_date())
+    output_information2 = (file2, file1, missing_file2_file1, output_file2, get_current_date())
+
+    print("output1: ", output_information1)
+    print("output2: ", output_information2)
+
+    output_information = [output_information1, output_information2]
+
+    create_log(output_information, logfile)
 
 
 def main():
