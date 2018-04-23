@@ -202,7 +202,7 @@ def difference_between_sets(set_a, set_b):
 
     missing_elements = set_b - set_a
 
-    print("There are ", missing_elements, " missing elements.")
+    print("There are ", len(missing_elements), " missing elements.")
 
     return missing_elements
 
