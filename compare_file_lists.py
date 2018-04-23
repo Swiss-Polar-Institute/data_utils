@@ -28,6 +28,20 @@ def get_current_date():
     return todays_date
 
 
+def get_current_time():
+    """Get the current time and write it in the format HHMMDD (24-hour)."""
+
+    now = datetime.datetime.now()
+
+    hour = "{:02}".format(now.hour)
+    minute = "{:02}".format(now.minute)
+    second = "{:02}".format(now.second)
+
+    time_now = hour + minute + second
+
+    return time_now
+
+
 def how_to_do_file_comparison(possible_storage_locations, possible_directories):
     """This funciton takes an input from the user who decides how the file comparison is going to work. It outputs a string which then decides how the rest of the script runs."""
 
@@ -227,7 +241,7 @@ def create_log(information, output_file):
     """This function creates a log of all of the comparisons that have been done, when and what they have produced."""
 
     try:
-        output = open(output_file, 'w')
+        output = open(output_file, 'a')
     except IOError:
         print("Not able to open outfile: ", output_file)
         exit(1)
@@ -344,8 +358,8 @@ def compare_files(file1, file2, comparison_directory):
     # file_type = 'missing'
     missing_file2_file1 = check_length_list(output_file2, missing_files2)
 
-    output_information1 = (file1, file2, missing_file1_file2, output_file1, get_current_date())
-    output_information2 = (file2, file1, missing_file2_file1, output_file2, get_current_date())
+    output_information1 = (file1, file2, missing_file1_file2, output_file1, get_current_date() + "_" + get_current_time())
+    output_information2 = (file2, file1, missing_file2_file1, output_file2, get_current_date() + "_" + get_current_time())
 
     print("output1: ", output_information1)
     print("output2: ", output_information2)
