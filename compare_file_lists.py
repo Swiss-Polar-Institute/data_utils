@@ -361,9 +361,6 @@ def compare_files(file1, file2, comparison_directory):
     output_information1 = (file1, file2, missing_file1_file2, output_file1, get_current_date() + "_" + get_current_time())
     output_information2 = (file2, file1, missing_file2_file1, output_file2, get_current_date() + "_" + get_current_time())
 
-    print("output1: ", output_information1)
-    print("output2: ", output_information2)
-
     output_information = [output_information1, output_information2]
 
     create_log(output_information, logfile)
