@@ -82,8 +82,14 @@ def get_storage_locations_to_compare(possible_storage_locations):
     return storage_locations
 
 
+def create_list_of_file_lists(dir_path_to_files):
+    """This function creates a list of the files within each of the file storage locations so the user can inspect them to look for comparison options."""
+
+    folders = os.listdir()
+    print(folders)
+
 def get_directories_to_compare(possible_directory_locations):
-    """This function will ask the user for the two directories to output them in a tuple."""
+    """This function will ask the user for a directory (eg. ace_data) that they would like to compare, and the other (can be >=1) directories that they would like to compare it to. They will also have to select this from the list of available directories."""
 
     directory1 = None
     directory2 = None
@@ -302,9 +308,16 @@ def compare_storage_locations(possible_storage_locations):
 
         compare_files(file1, file2, comparison_directory)
 
+
 def compare_directories(possible_directories):
-    get_directories_to_compare(possible_directories)
-    #TODO
+    """This function compares the files of file lists based on a certain directory."""
+
+    directories = get_directories_to_compare(possible_directories)
+
+
+
+
+    #compare_files(file1, file2, comparison_directory)
 
 
 def compare_files(file1, file2, comparison_directory):
