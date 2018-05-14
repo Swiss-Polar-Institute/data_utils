@@ -13,6 +13,7 @@
 import csv
 import os
 import datetime
+import pprint
 
 def get_current_date():
     """Get the current date and write it in the format YYYYMMDD"""
@@ -42,16 +43,18 @@ def get_current_time():
     return time_now
 
 
-def how_to_do_file_comparison(possible_storage_locations, possible_directories):
+def how_to_do_file_comparison():
     """This funciton takes an input from the user who decides how the file comparison is going to work. It outputs a string which then decides how the rest of the script runs."""
 
-    method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
+    #method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
 
-    if method == "directory" or method == "storage location":
+    method = str(input("Would you like to compare selected files or files by storage location? Please enter: files OR storage location  "))
+
+    if method == "files" or method == "storage location":
         print("OK. This script will compare by ", method)
     else:
         print(
-            "Your input was invalid. It should be directory or storage location. This script will now exit. Please retry.")
+            "Your input was invalid. It should be files or storage location. This script will now exit. Please retry.")
         exit
 
     return method
@@ -82,11 +85,20 @@ def get_storage_locations_to_compare(possible_storage_locations):
     return storage_locations
 
 
-def create_list_of_file_lists(dir_path_to_files):
+def create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir_name_appendix):
     """This function creates a list of the files within each of the file storage locations so the user can inspect them to look for comparison options."""
 
-    folders = os.listdir()
-    print(folders)
+    # Output list of files with name of storage location
+
+    for location in possible_storage_locations:
+        location_filepath = dir_path_to_files + location + "_" + dir_name_appendix
+        print("Filepath: ", location_filepath)
+        os.chdir(location_filepath)
+        all_files = os.listdir()
+
+    print(all_files)
+    return all_files
+
 
 def get_directories_to_compare(possible_directory_locations):
     """This function will ask the user for a directory (eg. ace_data) that they would like to compare, and the other (can be >=1) directories that they would like to compare it to. They will also have to select this from the list of available directories."""
@@ -262,7 +274,7 @@ def create_log(information, output_file):
 ###########################
 # The following details are specific to comparing the ace data.
 
-possible_storage_locations = ['spinas1', 'spinas2', 'spinas1-migr', 'spinas2-migr', 'testspinas1', 'testspinas2', 'testspinas1-migr', 'testspinas2-migr']
+possible_storage_locations = ['testspinas1', 'testspinas1-migr']
 possible_directories = ['ace_data', 'data_admin', 'work_leg1', 'work_leg4']
 
 dir_path_to_files = '/home/jen/projects/ace_data_management/wip/checking_nas/'
@@ -275,7 +287,7 @@ dir_name_appendix = "compiled_output"
 ###########################
 
 # Ask the user how to deal with the file comparison.
-method_of_file_comparison = how_to_do_file_comparison(possible_storage_locations, possible_directories)
+method_of_file_comparison = how_to_do_file_comparison()
 
 def compare_storage_locations(possible_storage_locations):
     """This function compares the files of file lists by storage location."""
@@ -309,10 +321,24 @@ def compare_storage_locations(possible_storage_locations):
         compare_files(file1, file2, comparison_directory)
 
 
-def compare_directories(possible_directories):
+def compare_by_files(possible_files):
     """This function compares the files of file lists based on a certain directory."""
 
-    directories = get_directories_to_compare(possible_directories)
+    print("Here is a list of the possible files you can compare. You will soon be asked to choose one that you would like to compare against others.")
+    pprint.pprint(possible_files)
+
+    file1 = str(input("Please enter the name of one of the files from the list above: "))
+
+    # check that this file is valid
+
+    while file1 not in possible_files:
+        file1 = str(input("Please enter the name of one of the files from the list above: "))
+        if file1 in possible_files:
+            print("Going to compare ", file1)
+        else:
+            print("That filename is not valid - it does not exist. Please type another filename from the list above.  ")
+
+    # directories = get_directories_to_compare(possible_files)
 
 
 
@@ -380,8 +406,9 @@ def compare_files(file1, file2, comparison_directory):
 
 
 def main():
-    if method_of_file_comparison == "directory":
-        compare_directories(possible_directories)
+    if method_of_file_comparison == "files":
+        possible_files = create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir_name_appendix)
+        compare_by_files(possible_files)
     elif method_of_file_comparison == "storage location":
         compare_storage_locations(possible_storage_locations)
 
