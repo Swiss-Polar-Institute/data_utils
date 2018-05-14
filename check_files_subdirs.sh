@@ -1,5 +1,6 @@
 #!/bin/bash -e
 # This script uses rhash to calculate the sha1sum of files within the directory. 
+# The script should be used by typing the following: check_files_subdirs.sh [directory path to folder to check] [directory path to where the output files should be saved] [subdirectory to check].
 
 if (($# == 3))
 then
