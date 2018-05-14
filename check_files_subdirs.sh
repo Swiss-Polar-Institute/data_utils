@@ -16,7 +16,7 @@ then
 
   TOPDIR="$(basename ${1})"
 else
-  echo "Please enter a directory path of the files you would like to check and the directory where the output file should be saved."
+  echo "Please enter a directory path of the files you would like to check and the directory where the output file should be saved. Then enter the sudirectory that you would like to check."
   exit 1
 fi
 
