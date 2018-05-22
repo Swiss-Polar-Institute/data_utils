@@ -44,17 +44,17 @@ def get_current_time():
 
 
 def how_to_do_file_comparison():
-    """This funciton takes an input from the user who decides how the file comparison is going to work. It outputs a string which then decides how the rest of the script runs."""
+    """This function takes an input from the user who decides how the file comparison is going to work: this can be by file list (the list of all files with their sha1sum) or by storage location (which is basically the directory of files). It outputs a string which then decides how the rest of the script runs."""
 
     #method = str(input("Would you like to compare the files by directory (eg. ace_data vs. ace_data_end_of_leg4) or by storage location (eg. spinas1 vs. spinas1-migr)? Enter directory or storage location.  "))
 
-    method = str(input("Would you like to compare selected files or files by storage location? Please enter: files OR storage location  "))
+    method = str(input("Would you like to compare selected file lists or files by storage location? Please enter: file lists OR storage location  "))
 
-    if method == "files" or method == "storage location":
+    if method == "file lists" or method == "storage location":
         print("OK. This script will compare by ", method)
     else:
         print(
-            "Your input was invalid. It should be files or storage location. This script will now exit. Please retry.")
+            "Your input was invalid. It should be file lists or storage location. This script will now exit. Please retry.")
         exit
 
     return method
