@@ -321,23 +321,35 @@ def compare_storage_locations(possible_storage_locations):
         compare_files(file1, file2, comparison_directory)
 
 
+def get_valid_file(possible_files):
+    """This function checks that the file is from a list of possible files."""
+
+    filename = None
+
+    while filename not in possible_files:
+        filename = str(input("Please enter the name of one of the files from the list above: "))
+        if filename in possible_files:
+            print("Going to compare ", filename)
+        else:
+            print("That filename is not valid - it does not exist. ")
+
+    return filename
+
+
 def compare_by_files(possible_files):
     """This function compares the files of file lists based on a certain directory."""
 
     print("Here is a list of the possible files you can compare. You will soon be asked to choose one that you would like to compare against others.")
     pprint.pprint(possible_files)
 
-    file1 = str(input("Please enter the name of one of the files from the list above: "))
+    # get a file to compare and check that this file is valid
 
-    # check that this file is valid
+    file1 = get_valid_file(possible_files)
 
-    while file1 not in possible_files:
-        file1 = str(input("Please enter the name of one of the files from the list above: "))
-        if file1 in possible_files:
-            print("Going to compare ", file1)
-        else:
-            print("That filename is not valid - it does not exist. Please type another filename from the list above.  ")
+    # get a second file to compare and check that this file is valid
 
+    file2 = get_valid_file(possible_files)
+    
     # directories = get_directories_to_compare(possible_files)
 
 
