@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# This scrpit has been created to compare two large areas of data storage and find which files are missing in the main data are, but are present in the backup and therefore need to be copied over still.
+# This scrpit has been created to compare two large areas of data storage and find which files are missing in the main data area, but are present in the backup and therefore need to be copied over still.
 
 # This script will compare lists of files (which have a directory path and a check sum) and produce the following output lists: 
 # - files that occur in both lists
