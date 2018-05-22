@@ -66,6 +66,9 @@ def get_storage_locations_to_compare(possible_storage_locations):
     storage_location1 = None
     storage_location2 = None
 
+    print("The possible storage locations are: ")
+    pprint.pprint(possible_storage_locations)
+
     while storage_location1 not in possible_storage_locations:
         storage_location1 = str(input("Type the name of the first storage location that you would like to compare.  "))
         if storage_location1 in possible_storage_locations: 
@@ -88,7 +91,8 @@ def get_storage_locations_to_compare(possible_storage_locations):
 def create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir_name_appendix):
     """This function creates a list of the files within each of the file storage locations so the user can inspect them to look for comparison options."""
 
-    # Output list of files with name of storage location
+    # Output list of files
+    files_to_compare = []
 
     for location in possible_storage_locations:
         location_filepath = dir_path_to_files + location + "_" + dir_name_appendix
@@ -96,8 +100,10 @@ def create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir
         os.chdir(location_filepath)
         all_files = os.listdir()
 
-    #print(all_files)
-    return all_files
+        for file in all_files:
+            files_to_compare.append(file)
+
+    return files_to_compare
 
 
 def get_directories_to_compare(possible_directory_locations):
@@ -349,7 +355,9 @@ def compare_by_files(possible_files):
     # get a second file to compare and check that this file is valid
 
     file2 = get_valid_file(possible_files)
-    
+
+    print("File ", file1, " is going to be compared with ", file2)
+
     # directories = get_directories_to_compare(possible_files)
 
 
