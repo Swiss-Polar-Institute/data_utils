@@ -96,7 +96,7 @@ def create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir
         os.chdir(location_filepath)
         all_files = os.listdir()
 
-    print(all_files)
+    #print(all_files)
     return all_files
 
 
@@ -406,7 +406,7 @@ def compare_files(file1, file2, comparison_directory):
 
 
 def main():
-    if method_of_file_comparison == "files":
+    if method_of_file_comparison == "file lists":
         possible_files = create_list_of_file_lists(possible_storage_locations, dir_path_to_files, dir_name_appendix)
         compare_by_files(possible_files)
     elif method_of_file_comparison == "storage location":
